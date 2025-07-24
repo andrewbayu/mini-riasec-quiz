@@ -52,9 +52,6 @@
     <!-- 5. Kode Aplikasi React Anda -->
     <script type="text/babel">
     
-    // PERBAIKAN: Pembungkus 'window.onload' dihapus karena menyebabkan SyntaxError di Babel.
-    // Kode akan berjalan secara alami setelah elemen 'root' dimuat.
-
     const { useState } = React;
 
     // --- Data untuk Kuis dan Hasil (Bahasa Indonesia) ---
@@ -67,7 +64,7 @@
           A: { text: "Suka bongkar pasang mainan, bikin sesuatu, atau utak-atik barang 🔧", type: "R" },
           B: { text: "Asyik menggambar, bikin cerita, atau pura-pura jadi karakter 🎨", type: "A" },
           C: { text: "Bertanya hal-hal unik seperti “Kenapa langit warnanya biru?” 🔍", type: "I" },
-          D: { text: "Menyusun mainan sesuai warna, ukuran, atau bentuk �", type: "C" },
+          D: { text: "Menyusun mainan sesuai warna, ukuran, atau bentuk 📊", type: "C" },
         }
       },
       {
@@ -238,38 +235,57 @@
     }
 
     function LeadFormPage({ handleFormSubmit, resultType }) {
-      const [formData, setFormData] = useState({ name: '', email: '', phone: '', result: resultType });
+      const [formData, setFormData] = useState({ 
+          name: '', 
+          email: '', 
+          phone: '', 
+          childAge: '', 
+          consent: false, 
+          result: resultType 
+      });
       const [status, setStatus] = useState({ loading: false, error: '', success: '' });
 
-      // URL Google Apps Script Anda telah dimasukkan di sini.
-      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby5XR9SblHSyLjxhuhYpKO1ySeq8kKDrzvuGlbGk0TrsI8CW06amOiOFHwP7nmMNPf4GQ/exec';
+      // URL Google Apps Script Anda yang baru sudah dimasukkan di sini.
+      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyCkgBwuks-mYgbWSoSRWeMz6WNwOm30cp9XgR4nWo963nRI-fdfrQnrk3ML1OXL9PmFg/exec';
 
       const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value, type, checked } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }));
       };
 
       const onSubmit = (e) => {
         e.preventDefault();
-        if (!formData.name || !formData.email || !formData.phone) {
+        if (!formData.name || !formData.email || !formData.phone || !formData.childAge) {
           setStatus({ ...status, error: 'Mohon isi semua kolom untuk melihat hasil Anda.' });
           return;
         }
 
         setStatus({ loading: true, error: '', success: '' });
+        
+        const form = new FormData();
+        for (const key in formData) {
+            form.append(key, formData[key]);
+        }
 
         fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
+            body: form
         })
-        .then(() => {
-            setStatus({ loading: false, error: '', success: 'Data berhasil dikirim!' });
-            setTimeout(() => { handleFormSubmit(); }, 1000);
+        .then(response => response.json())
+        .then(data => {
+            if (data.result === "success") {
+                setStatus({ loading: false, error: '', success: 'Data berhasil dikirim!' });
+                setTimeout(() => { handleFormSubmit(); }, 1000);
+            } else {
+                throw new Error(data.error || 'Terjadi kesalahan pada server.');
+            }
         })
         .catch(error => {
             console.error('Error submitting to Google Sheet:', error);
-            setStatus({ loading: false, error: 'Gagal mengirim data. Silakan coba lagi.', success: '' });
+            setStatus({ loading: false, error: `Gagal mengirim data: ${error.message}`, success: '' });
         });
       };
 
@@ -282,15 +298,36 @@
           <form onSubmit={onSubmit} className="space-y-4">
             <div>
               <label htmlFor="name" className="font-content block text-sm font-medium text-gray-700 mb-1">Nama Orang Tua</label>
-              <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="contoh: Budi" />
+              <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="contoh: Budi" required />
             </div>
             <div>
               <label htmlFor="email" className="font-content block text-sm font-medium text-gray-700 mb-1">Alamat Email</label>
-              <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="anda@email.com" />
+              <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="anda@email.com" required />
             </div>
             <div>
               <label htmlFor="phone" className="font-content block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
-              <input type="tel" name="phone" id="phone" value={formData.phone} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="08123456789" />
+              <input type="tel" name="phone" id="phone" value={formData.phone} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="08123456789" required />
+            </div>
+            <div>
+              <label htmlFor="childAge" className="font-content block text-sm font-medium text-gray-700 mb-1">Usia Anak (Tahun)</label>
+              <input type="number" name="childAge" id="childAge" value={formData.childAge} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="contoh: 7" required />
+            </div>
+            <div className="flex items-start mt-4">
+                <div className="flex items-center h-5">
+                    <input
+                        id="consent"
+                        name="consent"
+                        type="checkbox"
+                        checked={formData.consent}
+                        onChange={handleChange}
+                        className="focus:ring-[#f78f1e] h-4 w-4 text-[#2c2e83] border-gray-300 rounded"
+                    />
+                </div>
+                <div className="ml-3 text-sm">
+                    <label htmlFor="consent" className="font-content text-gray-600">
+                        Ya, saya bersedia dihubungi oleh tim CURIOO untuk informasi lebih lanjut mengenai program yang sesuai.
+                    </label>
+                </div>
             </div>
             
             {status.error && <p className="font-content text-red-500 text-sm text-center">{status.error}</p>}
@@ -401,15 +438,6 @@
 
       return (
         <main className="bg-gray-50 min-h-screen p-4 sm:p-6 md:p-8 flex items-center justify-center">
-          <style>{`
-            @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap');
-            .font-header { font-family: 'Fredoka', sans-serif; }
-            .font-content { font-family: 'Noto Sans', sans-serif; }
-            body { font-family: 'Noto Sans', sans-serif; }
-            h1, h2, h3, h4, h5, h6 { font-family: 'Fredoka', sans-serif; }
-            .animate-fade-in { animation: fadeIn 0.5s ease-in-out; }
-            @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-          `}</style>
           <div className="w-full max-w-5xl">
             {renderPage()}
           </div>
@@ -428,4 +456,3 @@
     </script>
 </body>
 </html>
-�
