@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Tipe Jenius Anak</title>
+    
+    <!-- 1. Memuat Font dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- 2. Memuat Tailwind CSS untuk Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 3. Memuat Pustaka React -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- 4. Memuat Babel untuk menjalankan JSX di Browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style type="text/tailwindcss">
+        /* Menambahkan font kustom ke Tailwind */
+        body {
+          font-family: 'Noto Sans', sans-serif;
+          background-color: #f9fafb; /* bg-gray-50 */
+        }
+        .font-header {
+          font-family: 'Fredoka', sans-serif;
+        }
+        .font-content {
+          font-family: 'Noto Sans', sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6 {
+          font-family: 'Fredoka', sans-serif;
+        }
+        .animate-fade-in { 
+          animation: fadeIn 0.5s ease-in-out; 
+        }
+        @keyframes fadeIn { 
+          from { opacity: 0; transform: translateY(10px); } 
+          to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Wadah untuk aplikasi React kita -->
+    <div id="root"></div>
+
+    <!-- 5. Kode Aplikasi React Anda -->
+    <script type="text/babel">
+    
+    // PERBAIKAN: Pembungkus 'window.onload' dihapus karena menyebabkan SyntaxError di Babel.
+    // Kode akan berjalan secara alami setelah elemen 'root' dimuat.
+
+    const { useState } = React;
+
+    // --- Data untuk Kuis dan Hasil (Bahasa Indonesia) ---
+
+    const quizData = [
+      {
+        id: 'q1',
+        question: "Saat punya waktu bebas di rumah, biasanya anak Anda…",
+        options: {
+          A: { text: "Suka bongkar pasang mainan, bikin sesuatu, atau utak-atik barang 🔧", type: "R" },
+          B: { text: "Asyik menggambar, bikin cerita, atau pura-pura jadi karakter 🎨", type: "A" },
+          C: { text: "Bertanya hal-hal unik seperti “Kenapa langit warnanya biru?” 🔍", type: "I" },
+          D: { text: "Menyusun mainan sesuai warna, ukuran, atau bentuk �", type: "C" },
+        }
+      },
+      {
+        id: 'q2',
+        question: "Kalau anak Anda dapat tugas baru, biasanya mereka…",
+        options: {
+          A: { text: "Menyelesaikannya dengan cara kreatif dan beda dari yang lain ✨", type: "A" },
+          B: { text: "Langsung ambil peran untuk ngatur atau memimpin teman-temannya 🔊", type: "E" },
+          C: { text: "Banyak tanya dulu atau cari tahu sebelum mulai 🔎", type: "I" },
+          D: { text: "Bantu teman lain biar ngerti cara ngerjainnya 👩‍🏫", type: "S" },
+        }
+      },
+      {
+        id: 'q3',
+        question: "Kalau ada proyek sekolah, anak Anda lebih cenderung…",
+        options: {
+          A: { text: "Punya ide unik yang belum terpikirkan oleh teman-temannya 💡", type: "A" },
+          B: { text: "Semangat untuk menjadi yang presentasi di depan kelas 🎤", type: "E" },
+          C: { text: "Fokus ngumpulin data dan nyusun semuanya dengan rapi 📋", type: "C" },
+          D: { text: "Bikin model atau prakarya langsung dengan tangannya 🛠️", type: "R" },
+        }
+      },
+      {
+        id: 'q4',
+        question: "Anak Anda paling semangat kalau…",
+        options: {
+          A: { text: "Bisa bantu teman atau saudaranya yang lagi kesulitan 💬", type: "S" },
+          B: { text: "Dikasih waktu buat berimajinasi dan bikin sesuatu sendiri 🖌️", type: "A" },
+          C: { text: "Diberi tantangan seperti teka-teki atau permainan logika 🧩", type: "I" },
+          D: { text: "Main di luar rumah, eksplorasi, atau aktivitas fisik 🧱", type: "R" },
+        }
+      },
+      {
+        id: 'q5',
+        question: "Saat ikut kegiatan bareng teman-temannya, anak Anda biasanya…",
+        options: {
+          A: { text: "Ambil peran jadi pemimpin dan ngatur jalannya kegiatan 📣", type: "E" },
+          B: { text: "Bikin semua teman merasa dilibatkan dan nyaman 😊", type: "S" },
+          C: { text: "Fokus biar kegiatan berjalan sesuai urutan dan aturan ✅", type: "C" },
+          D: { text: "Lebih diam, tapi kasih ide setelah berpikir matang 🤔", type: "I" },
+        }
+      },
+      {
+        id: 'q6',
+        question: "Kalau diminta bikin sesuatu untuk seru-seruan, anak Anda akan…",
+        options: {
+          A: { text: "Buat sesuatu yang bisa langsung dimainkan atau dipakai ⚙️", type: "R" },
+          B: { text: "Mendesain sesuatu yang cantik, lucu, atau unik 🎭", type: "A" },
+          C: { text: "Coba 'jual' hasil karyanya ke orang tua atau temannya 🛍️", type: "E" },
+          D: { text: "Labelin dan nyusun semua bagian dengan urutan yang rapi 🗂️", type: "C" },
+        }
+      }
+    ];
+
+    const resultData = {
+      R: {
+        image: "https://placehold.co/600x600/f87171/ffffff?text=Realistic\n(R)",
+        headline: "🔧 (R) – SI AKTIF & PRAKTIS",
+        intro: "Anak Anda menunjukkan tipe Realistic — penuh energi, suka bergerak, dan belajar paling cepat saat bisa langsung praktik.",
+        strengths: { title: "Apa kekuatan anak tipe Realistic?", points: ["🧪 Suka bereksperimen, membongkar, dan menyusun ulang.", "🏃 Belajar paling efektif lewat aktivitas nyata dan praktik langsung.", "⚡ Semangat saat bisa 'terjun langsung' dan belajar sambil bergerak."] },
+        challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["⏳ Kadang kurang sabar dalam kerja kelompok.", "🗣️ Sulit mengekspresikan perasaan secara verbal.", "🗺️ Cenderung ingin langsung mulai tanpa banyak diskusi atau perencanaan."] }
+      },
+      A: {
+        image: "https://placehold.co/600x600/60a5fa/ffffff?text=Artistic\n(A)",
+        headline: "🎨 (A) – SI IMAJINATIF & EKSPRESIF",
+        intro: "Anak Anda menunjukkan tipe Artistic — penuh ide, suka berkreasi, dan senang mengekspresikan diri.",
+        strengths: { title: "Apa kekuatan anak tipe Artistic?", points: ["🎭 Senang menggambar, bercerita, dan bermain peran.", "💡 Imajinasi mereka kuat, unik, dan out-of-the-box.", "💖 Sangat sensitif dan ekspresif dalam menyampaikan perasaan."] },
+        challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["🗓️ Cenderung spontan dan kadang kesulitan mengikuti struktur atau jadwal.", "🎯 Butuh bimbingan untuk menyusun ide-ide kreatif menjadi langkah yang konkret."] }
+      },
+      I: {
+        image: "https://placehold.co/600x600/34d399/ffffff?text=Investigative\n(I)",
+        headline: "🔍 (I) – SI PENASARAN & ANALITIS",
+        intro: "Anak Anda menunjukkan tipe Investigative — suka bertanya “kenapa?”, senang berpikir dalam, dan menikmati tantangan intelektual.",
+        strengths: { title: "Apa kekuatan anak tipe Investigative?", points: ["📚 Senang membaca, menyelidiki, dan menyusun informasi.", "🧠 Mandiri dalam berpikir dan suka memecahkan masalah logis.", "🧩 Menikmati teka-teki atau tantangan yang membutuhkan analisis."] },
+        challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["🎤 Kadang enggan tampil di depan umum atau memimpin kelompok.", "💬 Butuh waktu dan dukungan untuk lebih percaya diri saat menyampaikan ide."] }
+      },
+      S: {
+        image: "https://placehold.co/600x600/fbbf24/ffffff?text=Social\n(S)",
+        headline: "🤝 (S) – SI EMPATIK & PENOLONG",
+        intro: "Anak Anda menunjukkan tipe Social — suka membantu, mudah akrab, dan punya empati tinggi.",
+        strengths: { title: "Apa kekuatan anak tipe Social?", points: ["😊 Ramah, cepat akrab, dan peduli pada perasaan orang lain.", "🙌 Senang bekerja sama dan membuat suasana jadi nyaman.", "💖 Punya empati yang tinggi dan suka membantu sesama."] },
+        challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["👤 Bisa merasa kurang percaya diri saat harus menyelesaikan tugas individu.", "⚙️ Kadang merasa takut gagal saat menghadapi tantangan teknis."] }
+      },
+      E: {
+        image: "https://placehold.co/600x600/c084fc/ffffff?text=Enterprising\n(E)",
+        headline: "📣 (E) – SI PEMIMPIN & INISIATOR",
+        intro: "Anak Anda menunjukkan tipe Enterprising — percaya diri, penuh inisiatif, dan cepat ambil peran.",
+        strengths: { title: "Apa kekuatan anak tipe Enterprising?", points: ["🌟 Suka tampil, mengatur kelompok, dan menyampaikan ide.", "💪 Berani mengambil keputusan dan punya jiwa kepemimpinan yang kuat.", "🚀 Penuh inisiatif dan persuasif."] },
+        challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["🔍 Kadang kurang sabar dengan proses yang panjang.", "🎯 Terlalu fokus pada hasil akhir sehingga bisa melewatkan detail penting."] }
+      },
+      C: {
+        image: "https://placehold.co/600x600/9ca3af/ffffff?text=Conventional\n(C)",
+        headline: "✅ (C) – SI TERATUR & TELITI",
+        intro: "Anak Anda menunjukkan tipe Conventional — suka rutinitas, rapi, dan merasa nyaman saat semua tertata jelas.",
+        strengths: { title: "Apa kekuatan anak tipe Conventional?", points: ["꼼 Teliti, suka mengikuti langkah demi langkah, dan bisa diandalkan.", "📋 Merasa nyaman saat semua berjalan sesuai aturan dan struktur.", "✨ Sangat fokus dan bertanggung jawab dalam menyelesaikan tugas."] },
+        challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["🤔 Kadang ragu untuk mencoba hal baru atau berimprovisasi.", "🚧 Bisa terlalu terpaku pada 'satu cara yang benar' dan kurang fleksibel."] }
+      },
+      cta: {
+        intro: "Ingin tahu bagaimana CURIOOkids bisa bantu anak Anda meraih potensi terbaiknya?",
+        text: "Yuk, ambil Tes Kepribadian Anak CURIOOkids (SmartStart) bersama teacher kami!",
+        buttonText: "Klik di sini untuk booking sekarang"
+      }
+    };
+
+
+    // --- Komponen yang Dapat Digunakan Kembali ---
+    function Card({ children, className = '' }) {
+        return (
+            <div className={`bg-white rounded-2xl shadow-lg p-6 md:p-8 w-full ${className}`}>
+                {children}
+            </div>
+        );
+    }
+
+    function Button({ children, onClick, className = '', disabled = false }) {
+        return (
+            <button
+                onClick={onClick}
+                disabled={disabled}
+                className={`w-full text-center font-bold py-3 px-6 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 font-header ${className}`}
+            >
+                {children}
+            </button>
+        );
+    }
+
+    // --- Komponen Halaman ---
+    function QuizPage({ answers, setAnswers, handleSubmit }) {
+      const handleSelect = (questionId, type) => {
+        setAnswers(prev => ({ ...prev, [questionId]: type }));
+      };
+      
+      const allAnswered = Object.keys(answers).length === quizData.length;
+
+      return (
+        <div className="space-y-8">
+          <div className="text-center">
+            <h1 className="font-header text-3xl md:text-4xl font-extrabold text-[#2c2e83]">Apa Tipe Jenius Anak Anda?</h1>
+            <p className="font-content mt-2 text-gray-600">Jawab 6 pertanyaan ini untuk mengetahuinya!</p>
+          </div>
+          <div className="space-y-6">
+            {quizData.map((item, index) => (
+              <Card key={item.id}>
+                <p className="font-header font-bold text-lg text-gray-800 mb-4">{index + 1}. {item.question}</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {Object.entries(item.options).map(([key, option]) => (
+                    <button
+                      key={key}
+                      onClick={() => handleSelect(item.id, option.type)}
+                      className={`font-content p-4 rounded-lg text-left transition-all duration-200 border-2 ${answers[item.id] === option.type ? 'bg-[#2c2e83] text-white border-[#2c2e83] ring-2 ring-offset-2 ring-[#f78f1e]' : 'bg-gray-100 hover:bg-gray-200 border-transparent'}`}
+                    >
+                      {option.text}
+                    </button>
+                  ))}
+                </div>
+              </Card>
+            ))}
+          </div>
+          <Button 
+            onClick={handleSubmit} 
+            disabled={!allAnswered}
+            className="bg-[#f78f1e] text-white text-xl"
+          >
+            Lihat Hasilnya
+          </Button>
+        </div>
+      );
+    }
+
+    function LeadFormPage({ handleFormSubmit, resultType }) {
+      const [formData, setFormData] = useState({ name: '', email: '', phone: '', result: resultType });
+      const [status, setStatus] = useState({ loading: false, error: '', success: '' });
+
+      // URL Google Apps Script Anda telah dimasukkan di sini.
+      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby5XR9SblHSyLjxhuhYpKO1ySeq8kKDrzvuGlbGk0TrsI8CW06amOiOFHwP7nmMNPf4GQ/exec';
+
+      const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+      };
+
+      const onSubmit = (e) => {
+        e.preventDefault();
+        if (!formData.name || !formData.email || !formData.phone) {
+          setStatus({ ...status, error: 'Mohon isi semua kolom untuk melihat hasil Anda.' });
+          return;
+        }
+
+        setStatus({ loading: true, error: '', success: '' });
+
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        })
+        .then(() => {
+            setStatus({ loading: false, error: '', success: 'Data berhasil dikirim!' });
+            setTimeout(() => { handleFormSubmit(); }, 1000);
+        })
+        .catch(error => {
+            console.error('Error submitting to Google Sheet:', error);
+            setStatus({ loading: false, error: 'Gagal mengirim data. Silakan coba lagi.', success: '' });
+        });
+      };
+
+      return (
+        <Card className="max-w-lg mx-auto">
+          <div className="text-center mb-6">
+            <h2 className="font-header text-2xl md:text-3xl font-bold text-[#2c2e83]">Satu Langkah Lagi!</h2>
+            <p className="font-content mt-2 text-gray-600">Isi data di bawah ini untuk membuka hasil tes.</p>
+          </div>
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="name" className="font-content block text-sm font-medium text-gray-700 mb-1">Nama Orang Tua</label>
+              <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="contoh: Budi" />
+            </div>
+            <div>
+              <label htmlFor="email" className="font-content block text-sm font-medium text-gray-700 mb-1">Alamat Email</label>
+              <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="anda@email.com" />
+            </div>
+            <div>
+              <label htmlFor="phone" className="font-content block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
+              <input type="tel" name="phone" id="phone" value={formData.phone} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="08123456789" />
+            </div>
+            
+            {status.error && <p className="font-content text-red-500 text-sm text-center">{status.error}</p>}
+            {status.success && <p className="font-content text-green-500 text-sm text-center">{status.success}</p>}
+            
+            <div className="pt-4">
+              <Button type="submit" className="bg-[#f78f1e] text-white text-lg" disabled={status.loading}>
+                {status.loading ? 'Mengirim...' : 'Lihat Hasil Saya!'}
+              </Button>
+            </div>
+          </form>
+        </Card>
+      );
+    }
+
+    function ThankYouPage({ resultType }) {
+      const result = resultData[resultType];
+      const cta = resultData.cta;
+
+      if (!result) {
+        return (
+          <Card>
+            <h2 className="font-header text-2xl font-bold text-center text-[#2c2e83]">Hasil tidak ditemukan.</h2>
+            <p className="font-content text-center mt-2">Silakan coba lagi kuisnya.</p>
+          </Card>
+        );
+      }
+
+      return (
+        <Card className="max-w-4xl mx-auto animate-fade-in">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+                <img 
+                    src={result.image} 
+                    alt={`Placeholder untuk ${result.headline}`} 
+                    className="w-full h-auto aspect-square object-cover rounded-lg shadow-md"
+                />
+                <div className="text-center md:text-left">
+                    <h1 className="font-header text-3xl md:text-4xl font-extrabold text-[#2c2e83]">{result.headline}</h1>
+                    <p className="font-content text-lg text-gray-700 mt-3">{result.intro}</p>
+                </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 mt-8 text-left">
+                <div className="bg-blue-50 p-6 rounded-lg">
+                    <h3 className="font-header font-bold text-xl text-[#2c2e83] mb-3">{result.strengths.title}</h3>
+                    <ul className="space-y-2 font-content">
+                        {result.strengths.points.map((point, i) => <li key={i} className="text-gray-800">{point}</li>)}
+                    </ul>
+                </div>
+                <div className="bg-orange-50 p-6 rounded-lg">
+                    <h3 className="font-header font-bold text-xl text-[#f78f1e] mb-3">{result.challenges.title}</h3>
+                    <ul className="space-y-2 font-content">
+                        {result.challenges.points.map((point, i) => <li key={i} className="text-gray-800">{point}</li>)}
+                    </ul>
+                </div>
+            </div>
+
+            <div className="text-center mt-10 pt-8 border-t border-gray-200">
+                <p className="font-header text-lg font-semibold text-gray-800">{cta.intro}</p>
+                <p className="font-content text-md text-gray-600 mt-2">{cta.text}</p>
+                <a
+                    href="https://curioo.co.id/digital-form/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-header mt-6 inline-block bg-[#f78f1e] text-white font-bold py-3 px-10 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105"
+                >
+                    📍 {cta.buttonText}
+                </a>
+            </div>
+        </Card>
+      );
+    }
+
+
+    // --- Komponen Aplikasi Utama ---
+    function App() {
+      const [page, setPage] = useState('quiz');
+      const [answers, setAnswers] = useState({});
+      const [result, setResult] = useState(null);
+
+      const handleQuizSubmit = () => {
+        const scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+        Object.values(answers).forEach(type => { scores[type]++; });
+
+        const highestScore = Math.max(...Object.values(scores));
+        const resultType = Object.keys(scores).find(key => scores[key] === highestScore);
+        
+        setResult(resultType);
+        setPage('form');
+      };
+
+      const handleFormSubmit = () => {
+        setPage('thankyou');
+      };
+
+      const renderPage = () => {
+        switch (page) {
+          case 'quiz':
+            return <QuizPage answers={answers} setAnswers={setAnswers} handleSubmit={handleQuizSubmit} />;
+          case 'form':
+            return <LeadFormPage handleFormSubmit={handleFormSubmit} resultType={result} />;
+          case 'thankyou':
+            return <ThankYouPage resultType={result} />;
+          default:
+            return <QuizPage answers={answers} setAnswers={setAnswers} handleSubmit={handleQuizSubmit} />;
+        }
+      };
+
+      return (
+        <main className="bg-gray-50 min-h-screen p-4 sm:p-6 md:p-8 flex items-center justify-center">
+          <style>{`
+            @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap');
+            .font-header { font-family: 'Fredoka', sans-serif; }
+            .font-content { font-family: 'Noto Sans', sans-serif; }
+            body { font-family: 'Noto Sans', sans-serif; }
+            h1, h2, h3, h4, h5, h6 { font-family: 'Fredoka', sans-serif; }
+            .animate-fade-in { animation: fadeIn 0.5s ease-in-out; }
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+          `}</style>
+          <div className="w-full max-w-5xl">
+            {renderPage()}
+          </div>
+        </main>
+      );
+    }
+
+    const container = document.getElementById('root');
+    if (container) {
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    } else {
+        console.error("Target container 'root' not found in the DOM.");
+    }
+    
+    </script>
+</body>
+</html>
+�
