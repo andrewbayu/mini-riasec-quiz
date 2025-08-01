@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kuis Tipe Jenius Anak</title>
     
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '995108145727296');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=995108145727296&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+    
     <!-- 1. Memuat Font dari Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,7 +70,7 @@
     <!-- 5. Kode Aplikasi React Anda -->
     <script type="text/babel">
     
-    const { useState } = React;
+    const { useState, useEffect } = React;
 
     // --- Data untuk Kuis dan Hasil (Bahasa Indonesia) ---
 
@@ -245,7 +263,6 @@
       });
       const [status, setStatus] = useState({ loading: false, error: '', success: '' });
 
-      // URL Google Apps Script Anda yang baru sudah dimasukkan di sini.
       const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyCkgBwuks-mYgbWSoSRWeMz6WNwOm30cp9XgR4nWo963nRI-fdfrQnrk3ML1OXL9PmFg/exec';
 
       const handleChange = (e) => {
@@ -277,6 +294,10 @@
         .then(response => response.json())
         .then(data => {
             if (data.result === "success") {
+                // Memicu event 'Lead' untuk Meta Pixel
+                if (typeof fbq === 'function') {
+                    fbq('track', 'Lead');
+                }
                 setStatus({ loading: false, error: '', success: 'Data berhasil dikirim!' });
                 setTimeout(() => { handleFormSubmit(); }, 1000);
             } else {
@@ -347,6 +368,13 @@
       const result = resultData[resultType];
       const cta = resultData.cta;
 
+      // Memicu event 'CompleteRegistration' saat halaman ini ditampilkan
+      useEffect(() => {
+        if (typeof fbq === 'function') {
+            fbq('track', 'CompleteRegistration');
+        }
+      }, []); // Array kosong memastikan ini hanya berjalan sekali saat komponen dimuat
+
       if (!result) {
         return (
           <Card>
@@ -380,7 +408,7 @@
                 <div className="bg-orange-50 p-6 rounded-lg">
                     <h3 className="font-header font-bold text-xl text-[#f78f1e] mb-3">{result.challenges.title}</h3>
                     <ul className="space-y-2 font-content">
-                        {result.challenges.points.map((point, i) => <li key={i} className="text-gray-800">{point}</li>)}
+                        {result.strengths.points.map((point, i) => <li key={i} className="text-gray-800">{point}</li>)}
                     </ul>
                 </div>
             </div>
