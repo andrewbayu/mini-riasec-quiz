@@ -1,458 +1,519 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuis Tipe Jenius Anak</title>
-    
-    <!-- 1. Memuat Font dari Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- 2. Memuat Tailwind CSS untuk Styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- 3. Memuat Pustaka React -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
-    <!-- 4. Memuat Babel untuk menjalankan JSX di Browser -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <style type="text/tailwindcss">
-        /* Menambahkan font kustom ke Tailwind */
-        body {
-          font-family: 'Noto Sans', sans-serif;
-          background-color: #f9fafb; /* bg-gray-50 */
-        }
-        .font-header {
-          font-family: 'Fredoka', sans-serif;
-        }
-        .font-content {
-          font-family: 'Noto Sans', sans-serif;
-        }
-        h1, h2, h3, h4, h5, h6 {
-          font-family: 'Fredoka', sans-serif;
-        }
-        .animate-fade-in { 
-          animation: fadeIn 0.5s ease-in-out; 
-        }
-        @keyframes fadeIn { 
-          from { opacity: 0; transform: translateY(10px); } 
-          to { opacity: 1; transform: translateY(0); } 
-        }
-    </style>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2299.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #4689cc; -webkit-text-stroke: #4689cc}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #8cd3fe; -webkit-text-stroke: #8cd3fe}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #c27e65; -webkit-text-stroke: #c27e65}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #cacaca; -webkit-text-stroke: #cacaca}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #cacaca; -webkit-text-stroke: #cacaca; min-height: 16.0px}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #6d7378; -webkit-text-stroke: #6d7378}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #71c083; -webkit-text-stroke: #71c083}
+    span.s1 {font-kerning: none; background-color: #171818}
+    span.s2 {font-kerning: none; color: #8cd3fe; background-color: #171818; -webkit-text-stroke: 0px #8cd3fe}
+    span.s3 {font-kerning: none; color: #6d6d6d; background-color: #171818; -webkit-text-stroke: 0px #6d6d6d}
+    span.s4 {font-kerning: none; color: #cacaca; background-color: #171818; -webkit-text-stroke: 0px #cacaca}
+    span.s5 {font-kerning: none; color: #c27e65; background-color: #171818; -webkit-text-stroke: 0px #c27e65}
+    span.s6 {font-kerning: none; color: #4689cc; background-color: #171818; -webkit-text-stroke: 0px #4689cc}
+    span.s7 {font-kerning: none; color: #d4d4d4; background-color: #171818; -webkit-text-stroke: 0px #d4d4d4}
+    span.s8 {font-kerning: none; color: #b76ff7; background-color: #171818; -webkit-text-stroke: 0px #b76ff7}
+    span.s9 {font-kerning: none; color: #f67c30; background-color: #171818; -webkit-text-stroke: 0px #f67c30}
+    span.s10 {font-kerning: none; color: #71c083; background-color: #171818; -webkit-text-stroke: 0px #71c083}
+    span.s11 {font-kerning: none}
+  </style>
 </head>
 <body>
-
-    <!-- Wadah untuk aplikasi React kita -->
-    <div id="root"></div>
-
-    <!-- 5. Kode Aplikasi React Anda -->
-    <script type="text/babel">
-    
-    const { useState } = React;
-
-    // --- Data untuk Kuis dan Hasil (Bahasa Indonesia) ---
-
-    const quizData = [
-      {
-        id: 'q1',
-        question: "Saat punya waktu bebas di rumah, biasanya anak Anda…",
-        options: {
-          A: { text: "Suka bongkar pasang mainan, bikin sesuatu, atau utak-atik barang 🔧", type: "R" },
-          B: { text: "Asyik menggambar, bikin cerita, atau pura-pura jadi karakter 🎨", type: "A" },
-          C: { text: "Bertanya hal-hal unik seperti “Kenapa langit warnanya biru?” 🔍", type: "I" },
-          D: { text: "Menyusun mainan sesuai warna, ukuran, atau bentuk 📊", type: "C" },
-        }
-      },
-      {
-        id: 'q2',
-        question: "Kalau anak Anda dapat tugas baru, biasanya mereka…",
-        options: {
-          A: { text: "Menyelesaikannya dengan cara kreatif dan beda dari yang lain ✨", type: "A" },
-          B: { text: "Langsung ambil peran untuk ngatur atau memimpin teman-temannya 🔊", type: "E" },
-          C: { text: "Banyak tanya dulu atau cari tahu sebelum mulai 🔎", type: "I" },
-          D: { text: "Bantu teman lain biar ngerti cara ngerjainnya 👩‍🏫", type: "S" },
-        }
-      },
-      {
-        id: 'q3',
-        question: "Kalau ada proyek sekolah, anak Anda lebih cenderung…",
-        options: {
-          A: { text: "Punya ide unik yang belum terpikirkan oleh teman-temannya 💡", type: "A" },
-          B: { text: "Semangat untuk menjadi yang presentasi di depan kelas 🎤", type: "E" },
-          C: { text: "Fokus ngumpulin data dan nyusun semuanya dengan rapi 📋", type: "C" },
-          D: { text: "Bikin model atau prakarya langsung dengan tangannya 🛠️", type: "R" },
-        }
-      },
-      {
-        id: 'q4',
-        question: "Anak Anda paling semangat kalau…",
-        options: {
-          A: { text: "Bisa bantu teman atau saudaranya yang lagi kesulitan 💬", type: "S" },
-          B: { text: "Dikasih waktu buat berimajinasi dan bikin sesuatu sendiri 🖌️", type: "A" },
-          C: { text: "Diberi tantangan seperti teka-teki atau permainan logika 🧩", type: "I" },
-          D: { text: "Main di luar rumah, eksplorasi, atau aktivitas fisik 🧱", type: "R" },
-        }
-      },
-      {
-        id: 'q5',
-        question: "Saat ikut kegiatan bareng teman-temannya, anak Anda biasanya…",
-        options: {
-          A: { text: "Ambil peran jadi pemimpin dan ngatur jalannya kegiatan 📣", type: "E" },
-          B: { text: "Bikin semua teman merasa dilibatkan dan nyaman 😊", type: "S" },
-          C: { text: "Fokus biar kegiatan berjalan sesuai urutan dan aturan ✅", type: "C" },
-          D: { text: "Lebih diam, tapi kasih ide setelah berpikir matang 🤔", type: "I" },
-        }
-      },
-      {
-        id: 'q6',
-        question: "Kalau diminta bikin sesuatu untuk seru-seruan, anak Anda akan…",
-        options: {
-          A: { text: "Buat sesuatu yang bisa langsung dimainkan atau dipakai ⚙️", type: "R" },
-          B: { text: "Mendesain sesuatu yang cantik, lucu, atau unik 🎭", type: "A" },
-          C: { text: "Coba 'jual' hasil karyanya ke orang tua atau temannya 🛍️", type: "E" },
-          D: { text: "Labelin dan nyusun semua bagian dengan urutan yang rapi 🗂️", type: "C" },
-        }
-      }
-    ];
-
-    const resultData = {
-      R: {
-        image: "https://placehold.co/600x600/f87171/ffffff?text=Realistic\n(R)",
-        headline: "🔧 (R) – SI AKTIF & PRAKTIS",
-        intro: "Anak Anda menunjukkan tipe Realistic — penuh energi, suka bergerak, dan belajar paling cepat saat bisa langsung praktik.",
-        strengths: { title: "Apa kekuatan anak tipe Realistic?", points: ["🧪 Suka bereksperimen, membongkar, dan menyusun ulang.", "🏃 Belajar paling efektif lewat aktivitas nyata dan praktik langsung.", "⚡ Semangat saat bisa 'terjun langsung' dan belajar sambil bergerak."] },
-        challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["⏳ Kadang kurang sabar dalam kerja kelompok.", "🗣️ Sulit mengekspresikan perasaan secara verbal.", "🗺️ Cenderung ingin langsung mulai tanpa banyak diskusi atau perencanaan."] }
-      },
-      A: {
-        image: "https://placehold.co/600x600/60a5fa/ffffff?text=Artistic\n(A)",
-        headline: "🎨 (A) – SI IMAJINATIF & EKSPRESIF",
-        intro: "Anak Anda menunjukkan tipe Artistic — penuh ide, suka berkreasi, dan senang mengekspresikan diri.",
-        strengths: { title: "Apa kekuatan anak tipe Artistic?", points: ["🎭 Senang menggambar, bercerita, dan bermain peran.", "💡 Imajinasi mereka kuat, unik, dan out-of-the-box.", "💖 Sangat sensitif dan ekspresif dalam menyampaikan perasaan."] },
-        challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["🗓️ Cenderung spontan dan kadang kesulitan mengikuti struktur atau jadwal.", "🎯 Butuh bimbingan untuk menyusun ide-ide kreatif menjadi langkah yang konkret."] }
-      },
-      I: {
-        image: "https://placehold.co/600x600/34d399/ffffff?text=Investigative\n(I)",
-        headline: "🔍 (I) – SI PENASARAN & ANALITIS",
-        intro: "Anak Anda menunjukkan tipe Investigative — suka bertanya “kenapa?”, senang berpikir dalam, dan menikmati tantangan intelektual.",
-        strengths: { title: "Apa kekuatan anak tipe Investigative?", points: ["📚 Senang membaca, menyelidiki, dan menyusun informasi.", "🧠 Mandiri dalam berpikir dan suka memecahkan masalah logis.", "🧩 Menikmati teka-teki atau tantangan yang membutuhkan analisis."] },
-        challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["🎤 Kadang enggan tampil di depan umum atau memimpin kelompok.", "💬 Butuh waktu dan dukungan untuk lebih percaya diri saat menyampaikan ide."] }
-      },
-      S: {
-        image: "https://placehold.co/600x600/fbbf24/ffffff?text=Social\n(S)",
-        headline: "🤝 (S) – SI EMPATIK & PENOLONG",
-        intro: "Anak Anda menunjukkan tipe Social — suka membantu, mudah akrab, dan punya empati tinggi.",
-        strengths: { title: "Apa kekuatan anak tipe Social?", points: ["😊 Ramah, cepat akrab, dan peduli pada perasaan orang lain.", "🙌 Senang bekerja sama dan membuat suasana jadi nyaman.", "💖 Punya empati yang tinggi dan suka membantu sesama."] },
-        challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["👤 Bisa merasa kurang percaya diri saat harus menyelesaikan tugas individu.", "⚙️ Kadang merasa takut gagal saat menghadapi tantangan teknis."] }
-      },
-      E: {
-        image: "https://placehold.co/600x600/c084fc/ffffff?text=Enterprising\n(E)",
-        headline: "📣 (E) – SI PEMIMPIN & INISIATOR",
-        intro: "Anak Anda menunjukkan tipe Enterprising — percaya diri, penuh inisiatif, dan cepat ambil peran.",
-        strengths: { title: "Apa kekuatan anak tipe Enterprising?", points: ["🌟 Suka tampil, mengatur kelompok, dan menyampaikan ide.", "💪 Berani mengambil keputusan dan punya jiwa kepemimpinan yang kuat.", "🚀 Penuh inisiatif dan persuasif."] },
-        challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["🔍 Kadang kurang sabar dengan proses yang panjang.", "🎯 Terlalu fokus pada hasil akhir sehingga bisa melewatkan detail penting."] }
-      },
-      C: {
-        image: "https://placehold.co/600x600/9ca3af/ffffff?text=Conventional\n(C)",
-        headline: "✅ (C) – SI TERATUR & TELITI",
-        intro: "Anak Anda menunjukkan tipe Conventional — suka rutinitas, rapi, dan merasa nyaman saat semua tertata jelas.",
-        strengths: { title: "Apa kekuatan anak tipe Conventional?", points: ["꼼 Teliti, suka mengikuti langkah demi langkah, dan bisa diandalkan.", "📋 Merasa nyaman saat semua berjalan sesuai aturan dan struktur.", "✨ Sangat fokus dan bertanggung jawab dalam menyelesaikan tugas."] },
-        challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["🤔 Kadang ragu untuk mencoba hal baru atau berimprovisasi.", "🚧 Bisa terlalu terpaku pada 'satu cara yang benar' dan kurang fleksibel."] }
-      },
-      cta: {
-        intro: "Ingin tahu bagaimana CURIOOkids bisa bantu anak Anda meraih potensi terbaiknya?",
-        text: "Yuk, ambil Tes Kepribadian Anak CURIOOkids (SmartStart) bersama teacher kami!",
-        buttonText: "Klik di sini untuk booking sekarang"
-      }
-    };
-
-
-    // --- Komponen yang Dapat Digunakan Kembali ---
-    function Card({ children, className = '' }) {
-        return (
-            <div className={`bg-white rounded-2xl shadow-lg p-6 md:p-8 w-full ${className}`}>
-                {children}
-            </div>
-        );
-    }
-
-    function Button({ children, onClick, className = '', disabled = false }) {
-        return (
-            <button
-                onClick={onClick}
-                disabled={disabled}
-                className={`w-full text-center font-bold py-3 px-6 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 font-header ${className}`}
-            >
-                {children}
-            </button>
-        );
-    }
-
-    // --- Komponen Halaman ---
-    function QuizPage({ answers, setAnswers, handleSubmit }) {
-      const handleSelect = (questionId, type) => {
-        setAnswers(prev => ({ ...prev, [questionId]: type }));
-      };
-      
-      const allAnswered = Object.keys(answers).length === quizData.length;
-
-      return (
-        <div className="space-y-8">
-          <div className="text-center">
-            <h1 className="font-header text-3xl md:text-4xl font-extrabold text-[#2c2e83]">Apa Tipe Jenius Anak Anda?</h1>
-            <p className="font-content mt-2 text-gray-600">Jawab 6 pertanyaan ini untuk mengetahuinya!</p>
-          </div>
-          <div className="space-y-6">
-            {quizData.map((item, index) => (
-              <Card key={item.id}>
-                <p className="font-header font-bold text-lg text-gray-800 mb-4">{index + 1}. {item.question}</p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {Object.entries(item.options).map(([key, option]) => (
-                    <button
-                      key={key}
-                      onClick={() => handleSelect(item.id, option.type)}
-                      className={`font-content p-4 rounded-lg text-left transition-all duration-200 border-2 ${answers[item.id] === option.type ? 'bg-[#2c2e83] text-white border-[#2c2e83] ring-2 ring-offset-2 ring-[#f78f1e]' : 'bg-gray-100 hover:bg-gray-200 border-transparent'}`}
-                    >
-                      {option.text}
-                    </button>
-                  ))}
-                </div>
-              </Card>
-            ))}
-          </div>
-          <Button 
-            onClick={handleSubmit} 
-            disabled={!allAnswered}
-            className="bg-[#f78f1e] text-white text-xl"
-          >
-            Lihat Hasilnya
-          </Button>
-        </div>
-      );
-    }
-
-    function LeadFormPage({ handleFormSubmit, resultType }) {
-      const [formData, setFormData] = useState({ 
-          name: '', 
-          email: '', 
-          phone: '', 
-          childAge: '', 
-          consent: false, 
-          result: resultType 
-      });
-      const [status, setStatus] = useState({ loading: false, error: '', success: '' });
-
-      // URL Google Apps Script Anda yang baru sudah dimasukkan di sini.
-      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyCkgBwuks-mYgbWSoSRWeMz6WNwOm30cp9XgR4nWo963nRI-fdfrQnrk3ML1OXL9PmFg/exec';
-
-      const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-      };
-
-      const onSubmit = (e) => {
-        e.preventDefault();
-        if (!formData.name || !formData.email || !formData.phone || !formData.childAge) {
-          setStatus({ ...status, error: 'Mohon isi semua kolom untuk melihat hasil Anda.' });
-          return;
-        }
-
-        setStatus({ loading: true, error: '', success: '' });
-        
-        const form = new FormData();
-        for (const key in formData) {
-            form.append(key, formData[key]);
-        }
-
-        fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            body: form
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.result === "success") {
-                setStatus({ loading: false, error: '', success: 'Data berhasil dikirim!' });
-                setTimeout(() => { handleFormSubmit(); }, 1000);
-            } else {
-                throw new Error(data.error || 'Terjadi kesalahan pada server.');
-            }
-        })
-        .catch(error => {
-            console.error('Error submitting to Google Sheet:', error);
-            setStatus({ loading: false, error: `Gagal mengirim data: ${error.message}`, success: '' });
-        });
-      };
-
-      return (
-        <Card className="max-w-lg mx-auto">
-          <div className="text-center mb-6">
-            <h2 className="font-header text-2xl md:text-3xl font-bold text-[#2c2e83]">Satu Langkah Lagi!</h2>
-            <p className="font-content mt-2 text-gray-600">Isi data di bawah ini untuk membuka hasil tes.</p>
-          </div>
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="name" className="font-content block text-sm font-medium text-gray-700 mb-1">Nama Orang Tua</label>
-              <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="contoh: Budi" required />
-            </div>
-            <div>
-              <label htmlFor="email" className="font-content block text-sm font-medium text-gray-700 mb-1">Alamat Email</label>
-              <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="anda@email.com" required />
-            </div>
-            <div>
-              <label htmlFor="phone" className="font-content block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
-              <input type="tel" name="phone" id="phone" value={formData.phone} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="08123456789" required />
-            </div>
-            <div>
-              <label htmlFor="childAge" className="font-content block text-sm font-medium text-gray-700 mb-1">Usia Anak (Tahun)</label>
-              <input type="number" name="childAge" id="childAge" value={formData.childAge} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="contoh: 7" required />
-            </div>
-            <div className="flex items-start mt-4">
-                <div className="flex items-center h-5">
-                    <input
-                        id="consent"
-                        name="consent"
-                        type="checkbox"
-                        checked={formData.consent}
-                        onChange={handleChange}
-                        className="focus:ring-[#f78f1e] h-4 w-4 text-[#2c2e83] border-gray-300 rounded"
-                    />
-                </div>
-                <div className="ml-3 text-sm">
-                    <label htmlFor="consent" className="font-content text-gray-600">
-                        Ya, saya bersedia dihubungi oleh tim CURIOO untuk informasi lebih lanjut mengenai program yang sesuai.
-                    </label>
-                </div>
-            </div>
-            
-            {status.error && <p className="font-content text-red-500 text-sm text-center">{status.error}</p>}
-            {status.success && <p className="font-content text-green-500 text-sm text-center">{status.success}</p>}
-            
-            <div className="pt-4">
-              <Button type="submit" className="bg-[#f78f1e] text-white text-lg" disabled={status.loading}>
-                {status.loading ? 'Mengirim...' : 'Lihat Hasil Saya!'}
-              </Button>
-            </div>
-          </form>
-        </Card>
-      );
-    }
-
-    function ThankYouPage({ resultType }) {
-      const result = resultData[resultType];
-      const cta = resultData.cta;
-
-      if (!result) {
-        return (
-          <Card>
-            <h2 className="font-header text-2xl font-bold text-center text-[#2c2e83]">Hasil tidak ditemukan.</h2>
-            <p className="font-content text-center mt-2">Silakan coba lagi kuisnya.</p>
-          </Card>
-        );
-      }
-
-      return (
-        <Card className="max-w-4xl mx-auto animate-fade-in">
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-                <img 
-                    src={result.image} 
-                    alt={`Placeholder untuk ${result.headline}`} 
-                    className="w-full h-auto aspect-square object-cover rounded-lg shadow-md"
-                />
-                <div className="text-center md:text-left">
-                    <h1 className="font-header text-3xl md:text-4xl font-extrabold text-[#2c2e83]">{result.headline}</h1>
-                    <p className="font-content text-lg text-gray-700 mt-3">{result.intro}</p>
-                </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8 mt-8 text-left">
-                <div className="bg-blue-50 p-6 rounded-lg">
-                    <h3 className="font-header font-bold text-xl text-[#2c2e83] mb-3">{result.strengths.title}</h3>
-                    <ul className="space-y-2 font-content">
-                        {result.strengths.points.map((point, i) => <li key={i} className="text-gray-800">{point}</li>)}
-                    </ul>
-                </div>
-                <div className="bg-orange-50 p-6 rounded-lg">
-                    <h3 className="font-header font-bold text-xl text-[#f78f1e] mb-3">{result.challenges.title}</h3>
-                    <ul className="space-y-2 font-content">
-                        {result.challenges.points.map((point, i) => <li key={i} className="text-gray-800">{point}</li>)}
-                    </ul>
-                </div>
-            </div>
-
-            <div className="text-center mt-10 pt-8 border-t border-gray-200">
-                <p className="font-header text-lg font-semibold text-gray-800">{cta.intro}</p>
-                <p className="font-content text-md text-gray-600 mt-2">{cta.text}</p>
-                <a
-                    href="https://curioo.co.id/digital-form/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-header mt-6 inline-block bg-[#f78f1e] text-white font-bold py-3 px-10 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105"
-                >
-                    📍 {cta.buttonText}
-                </a>
-            </div>
-        </Card>
-      );
-    }
-
-
-    // --- Komponen Aplikasi Utama ---
-    function App() {
-      const [page, setPage] = useState('quiz');
-      const [answers, setAnswers] = useState({});
-      const [result, setResult] = useState(null);
-
-      const handleQuizSubmit = () => {
-        const scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-        Object.values(answers).forEach(type => { scores[type]++; });
-
-        const highestScore = Math.max(...Object.values(scores));
-        const resultType = Object.keys(scores).find(key => scores[key] === highestScore);
-        
-        setResult(resultType);
-        setPage('form');
-      };
-
-      const handleFormSubmit = () => {
-        setPage('thankyou');
-      };
-
-      const renderPage = () => {
-        switch (page) {
-          case 'quiz':
-            return <QuizPage answers={answers} setAnswers={setAnswers} handleSubmit={handleQuizSubmit} />;
-          case 'form':
-            return <LeadFormPage handleFormSubmit={handleFormSubmit} resultType={result} />;
-          case 'thankyou':
-            return <ThankYouPage resultType={result} />;
-          default:
-            return <QuizPage answers={answers} setAnswers={setAnswers} handleSubmit={handleQuizSubmit} />;
-        }
-      };
-
-      return (
-        <main className="bg-gray-50 min-h-screen p-4 sm:p-6 md:p-8 flex items-center justify-center">
-          <div className="w-full max-w-5xl">
-            {renderPage()}
-          </div>
-        </main>
-      );
-    }
-
-    const container = document.getElementById('root');
-    if (container) {
-      const root = ReactDOM.createRoot(container);
-      root.render(<App />);
-    } else {
-        console.error("Target container 'root' not found in the DOM.");
-    }
-    
-    </script>
+<p class="p1"><span class="s1">&lt;!DOCTYPE</span><span class="s2"> html</span><span class="s1">&gt;</span></p>
+<p class="p1"><span class="s3">&lt;</span><span class="s1">html</span><span class="s4"> </span><span class="s2">lang</span><span class="s3">=</span><span class="s5">"id"</span><span class="s3">&gt;</span></p>
+<p class="p1"><span class="s3">&lt;</span><span class="s1">head</span><span class="s3">&gt;</span></p>
+<p class="p2"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">meta</span><span class="s4"> </span><span class="s1">charset</span><span class="s3">=</span><span class="s5">"UTF-8"</span><span class="s3">&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">meta</span><span class="s4"> </span><span class="s2">name</span><span class="s3">=</span><span class="s1">"viewport"</span><span class="s4"> </span><span class="s2">content</span><span class="s3">=</span><span class="s1">"width=device-width, initial-scale=1.0"</span><span class="s3">&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">title</span><span class="s3">&gt;</span><span class="s1">Kuis Tipe Jenius Anak</span><span class="s3">&lt;/</span><span class="s6">title</span><span class="s3">&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p6"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- Meta Pixel Code --&gt;</span></p>
+<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s1">script</span><span class="s3">&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s7">!</span><span class="s8">function</span><span class="s7">(</span><span class="s1">f</span><span class="s7">,</span><span class="s1">b</span><span class="s7">,</span><span class="s1">e</span><span class="s7">,</span><span class="s1">v</span><span class="s7">,</span><span class="s1">n</span><span class="s7">,</span><span class="s1">t</span><span class="s7">,</span><span class="s1">s</span><span class="s7">)</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s7">{</span><span class="s8">if</span><span class="s7">(</span><span class="s1">f</span><span class="s7">.</span><span class="s1">fbq</span><span class="s7">)</span><span class="s8">return</span><span class="s7">;</span><span class="s1">n</span><span class="s7">=</span><span class="s1">f</span><span class="s7">.</span><span class="s1">fbq</span><span class="s7">=</span><span class="s8">function</span><span class="s7">(){</span><span class="s1">n</span><span class="s7">.</span><span class="s1">callMethod</span><span class="s7">?</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>n</span><span class="s7">.</span><span class="s1">callMethod</span><span class="s7">.</span><span class="s1">apply</span><span class="s7">(</span><span class="s1">n</span><span class="s7">,</span><span class="s1">arguments</span><span class="s7">):</span><span class="s1">n</span><span class="s7">.</span><span class="s1">queue</span><span class="s7">.</span><span class="s1">push</span><span class="s7">(</span><span class="s1">arguments</span><span class="s7">)};</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s8">if</span><span class="s7">(!</span><span class="s1">f</span><span class="s7">.</span><span class="s1">_fbq</span><span class="s7">)</span><span class="s1">f</span><span class="s7">.</span><span class="s1">_fbq</span><span class="s7">=</span><span class="s1">n</span><span class="s7">;</span><span class="s1">n</span><span class="s7">.</span><span class="s1">push</span><span class="s7">=</span><span class="s1">n</span><span class="s7">;</span><span class="s1">n</span><span class="s7">.</span><span class="s1">loaded=!</span><span class="s9">0</span><span class="s7">;</span><span class="s1">n</span><span class="s7">.</span><span class="s1">version</span><span class="s7">=</span><span class="s10">'2.0'</span><span class="s7">;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>n</span><span class="s7">.</span><span class="s1">queue</span><span class="s7">=[];</span><span class="s1">t</span><span class="s7">=</span><span class="s1">b</span><span class="s7">.</span><span class="s1">createElement</span><span class="s7">(</span><span class="s1">e</span><span class="s7">);</span><span class="s1">t</span><span class="s7">.</span><span class="s8">async</span><span class="s1">=!</span><span class="s9">0</span><span class="s7">;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>t</span><span class="s7">.</span><span class="s1">src</span><span class="s7">=</span><span class="s1">v</span><span class="s7">;</span><span class="s1">s</span><span class="s7">=</span><span class="s1">b</span><span class="s7">.</span><span class="s1">getElementsByTagName</span><span class="s7">(</span><span class="s1">e</span><span class="s7">)[</span><span class="s9">0</span><span class="s7">];</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>s</span><span class="s7">.</span><span class="s1">parentNode</span><span class="s7">.</span><span class="s1">insertBefore</span><span class="s7">(</span><span class="s1">t</span><span class="s7">,</span><span class="s1">s</span><span class="s7">)}(</span><span class="s1">window</span><span class="s7">,</span><span class="s1"> document</span><span class="s7">,</span><span class="s10">'script'</span><span class="s7">,</span></p>
+<p class="p7"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">'https://connect.facebook.net/en_US/fbevents.js'</span><span class="s7">);</span></p>
+<p class="p7"><span class="s4"><span class="Apple-converted-space">    </span>fbq</span><span class="s7">(</span><span class="s1">'init'</span><span class="s7">,</span><span class="s4"> </span><span class="s1">'995108145727296'</span><span class="s7">);</span></p>
+<p class="p7"><span class="s4"><span class="Apple-converted-space">    </span>fbq</span><span class="s7">(</span><span class="s1">'track'</span><span class="s7">,</span><span class="s4"> </span><span class="s1">'PageView'</span><span class="s7">);</span></p>
+<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">script</span><span class="s3">&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">noscript</span><span class="s3">&gt;&lt;</span><span class="s6">img</span><span class="s4"> </span><span class="s2">height</span><span class="s3">=</span><span class="s1">"1"</span><span class="s4"> </span><span class="s2">width</span><span class="s3">=</span><span class="s1">"1"</span><span class="s4"> </span><span class="s2">style</span><span class="s3">=</span><span class="s1">"display:none"</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://www.facebook.com/tr?id=995108145727296&amp;ev=PageView&amp;noscript=1"</span></p>
+<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">/&gt;&lt;/</span><span class="s1">noscript</span><span class="s3">&gt;</span></p>
+<p class="p6"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- End Meta Pixel Code --&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p6"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- 1. Memuat Font dari Google Fonts --&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">link</span><span class="s4"> </span><span class="s2">rel</span><span class="s3">=</span><span class="s1">"preconnect"</span><span class="s4"> </span><span class="s2">href</span><span class="s3">=</span><span class="s1">"https://fonts.googleapis.com"</span><span class="s3">&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">link</span><span class="s4"> </span><span class="s2">rel</span><span class="s3">=</span><span class="s1">"preconnect"</span><span class="s4"> </span><span class="s2">href</span><span class="s3">=</span><span class="s1">"https://fonts.gstatic.com"</span><span class="s4"> </span><span class="s2">crossorigin</span><span class="s3">&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">link</span><span class="s4"> </span><span class="s2">href</span><span class="s3">=</span><span class="s1">"https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap"</span><span class="s4"> </span><span class="s2">rel</span><span class="s3">=</span><span class="s1">"stylesheet"</span><span class="s3">&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p6"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- 2. Memuat Tailwind CSS untuk Styling --&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://cdn.tailwindcss.com"</span><span class="s3">&gt;&lt;/</span><span class="s6">script</span><span class="s3">&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p6"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- 3. Memuat Pustaka React --&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://unpkg.com/react@18/umd/react.development.js"</span><span class="s3">&gt;&lt;/</span><span class="s6">script</span><span class="s3">&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://unpkg.com/react-dom@18/umd/react-dom.development.js"</span><span class="s3">&gt;&lt;/</span><span class="s6">script</span><span class="s3">&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p6"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- 4. Memuat Babel untuk menjalankan JSX di Browser --&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://unpkg.com/@babel/standalone/babel.min.js"</span><span class="s3">&gt;&lt;/</span><span class="s6">script</span><span class="s3">&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">style</span><span class="s4"> </span><span class="s2">type</span><span class="s3">=</span><span class="s1">"text/tailwindcss"</span><span class="s3">&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>/* Menambahkan font kustom ke Tailwind */</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>body {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>font-family: 'Noto Sans', sans-serif;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>background-color: #f9fafb; /* bg-gray-50 */</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>.font-header {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>font-family: 'Fredoka', sans-serif;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>.font-content {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>font-family: 'Noto Sans', sans-serif;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>h1, h2, h3, h4, h5, h6 {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>font-family: 'Fredoka', sans-serif;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>.animate-fade-in {<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>animation: fadeIn 0.5s ease-in-out;<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>@keyframes fadeIn {<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>from { opacity: 0; transform: translateY(10px); }<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>to { opacity: 1; transform: translateY(0); }<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">style</span><span class="s3">&gt;</span></p>
+<p class="p1"><span class="s3">&lt;/</span><span class="s1">head</span><span class="s3">&gt;</span></p>
+<p class="p1"><span class="s3">&lt;</span><span class="s1">body</span><span class="s3">&gt;</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p6"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- Wadah untuk aplikasi React kita --&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"root"</span><span class="s3">&gt;&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p6"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- 5. Kode Aplikasi React Anda --&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">type</span><span class="s3">=</span><span class="s1">"text/babel"</span><span class="s3">&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>const { useState, useEffect } = React;</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>// --- Data untuk Kuis dan Hasil (Bahasa Indonesia) ---</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>const quizData = [</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>{</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>id: 'q1',</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>question: "Saat punya waktu bebas di rumah, biasanya anak Anda…",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>options: {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>A: { text: "Suka bongkar pasang mainan, bikin sesuatu, atau utak-atik barang 🔧", type: "R" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>B: { text: "Asyik menggambar, bikin cerita, atau pura-pura jadi karakter 🎨", type: "A" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>C: { text: "Bertanya hal-hal unik seperti “Kenapa langit warnanya biru?” 🔍", type: "I" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>D: { text: "Menyusun mainan sesuai warna, ukuran, atau bentuk 📊", type: "C" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>{</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>id: 'q2',</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>question: "Kalau anak Anda dapat tugas baru, biasanya mereka…",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>options: {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>A: { text: "Menyelesaikannya dengan cara kreatif dan beda dari yang lain ✨", type: "A" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>B: { text: "Langsung ambil peran untuk ngatur atau memimpin teman-temannya 🔊", type: "E" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>C: { text: "Banyak tanya dulu atau cari tahu sebelum mulai 🔎", type: "I" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>D: { text: "Bantu teman lain biar ngerti cara ngerjainnya 👩‍🏫", type: "S" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>{</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>id: 'q3',</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>question: "Kalau ada proyek sekolah, anak Anda lebih cenderung…",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>options: {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>A: { text: "Punya ide unik yang belum terpikirkan oleh teman-temannya 💡", type: "A" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>B: { text: "Semangat untuk menjadi yang presentasi di depan kelas 🎤", type: "E" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>C: { text: "Fokus ngumpulin data dan nyusun semuanya dengan rapi 📋", type: "C" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>D: { text: "Bikin model atau prakarya langsung dengan tangannya 🛠️", type: "R" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>{</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>id: 'q4',</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>question: "Anak Anda paling semangat kalau…",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>options: {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>A: { text: "Bisa bantu teman atau saudaranya yang lagi kesulitan 💬", type: "S" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>B: { text: "Dikasih waktu buat berimajinasi dan bikin sesuatu sendiri 🖌️", type: "A" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>C: { text: "Diberi tantangan seperti teka-teki atau permainan logika 🧩", type: "I" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>D: { text: "Main di luar rumah, eksplorasi, atau aktivitas fisik 🧱", type: "R" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>{</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>id: 'q5',</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>question: "Saat ikut kegiatan bareng teman-temannya, anak Anda biasanya…",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>options: {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>A: { text: "Ambil peran jadi pemimpin dan ngatur jalannya kegiatan 📣", type: "E" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>B: { text: "Bikin semua teman merasa dilibatkan dan nyaman 😊", type: "S" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>C: { text: "Fokus biar kegiatan berjalan sesuai urutan dan aturan ✅", type: "C" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>D: { text: "Lebih diam, tapi kasih ide setelah berpikir matang 🤔", type: "I" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>{</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>id: 'q6',</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>question: "Kalau diminta bikin sesuatu untuk seru-seruan, anak Anda akan…",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>options: {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>A: { text: "Buat sesuatu yang bisa langsung dimainkan atau dipakai ⚙️", type: "R" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>B: { text: "Mendesain sesuatu yang cantik, lucu, atau unik 🎭", type: "A" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>C: { text: "Coba 'jual' hasil karyanya ke orang tua atau temannya 🛍️", type: "E" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>D: { text: "Labelin dan nyusun semua bagian dengan urutan yang rapi 🗂️", type: "C" },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>];</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>const resultData = {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>R: {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>image: "https://placehold.co/600x600/f87171/ffffff?text=Realistic\n(R)",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>headline: "🔧 (R) – SI AKTIF &amp; PRAKTIS",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>intro: "Anak Anda menunjukkan tipe Realistic — penuh energi, suka bergerak, dan belajar paling cepat saat bisa langsung praktik.",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>strengths: { title: "Apa kekuatan anak tipe Realistic?", points: ["🧪 Suka bereksperimen, membongkar, dan menyusun ulang.", "🏃 Belajar paling efektif lewat aktivitas nyata dan praktik langsung.", "⚡ Semangat saat bisa 'terjun langsung' dan belajar sambil bergerak."] },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["⏳ Kadang kurang sabar dalam kerja kelompok.", "🗣️ Sulit mengekspresikan perasaan secara verbal.", "🗺️ Cenderung ingin langsung mulai tanpa banyak diskusi atau perencanaan."] }</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>A: {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>image: "https://placehold.co/600x600/60a5fa/ffffff?text=Artistic\n(A)",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>headline: "🎨 (A) – SI IMAJINATIF &amp; EKSPRESIF",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>intro: "Anak Anda menunjukkan tipe Artistic — penuh ide, suka berkreasi, dan senang mengekspresikan diri.",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>strengths: { title: "Apa kekuatan anak tipe Artistic?", points: ["🎭 Senang menggambar, bercerita, dan bermain peran.", "💡 Imajinasi mereka kuat, unik, dan out-of-the-box.", "💖 Sangat sensitif dan ekspresif dalam menyampaikan perasaan."] },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["🗓️ Cenderung spontan dan kadang kesulitan mengikuti struktur atau jadwal.", "🎯 Butuh bimbingan untuk menyusun ide-ide kreatif menjadi langkah yang konkret."] }</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>I: {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>image: "https://placehold.co/600x600/34d399/ffffff?text=Investigative\n(I)",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>headline: "🔍 (I) – SI PENASARAN &amp; ANALITIS",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>intro: "Anak Anda menunjukkan tipe Investigative — suka bertanya “kenapa?”, senang berpikir dalam, dan menikmati tantangan intelektual.",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>strengths: { title: "Apa kekuatan anak tipe Investigative?", points: ["📚 Senang membaca, menyelidiki, dan menyusun informasi.", "🧠 Mandiri dalam berpikir dan suka memecahkan masalah logis.", "🧩 Menikmati teka-teki atau tantangan yang membutuhkan analisis."] },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["🎤 Kadang enggan tampil di depan umum atau memimpin kelompok.", "💬 Butuh waktu dan dukungan untuk lebih percaya diri saat menyampaikan ide."] }</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>S: {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>image: "https://placehold.co/600x600/fbbf24/ffffff?text=Social\n(S)",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>headline: "🤝 (S) – SI EMPATIK &amp; PENOLONG",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>intro: "Anak Anda menunjukkan tipe Social — suka membantu, mudah akrab, dan punya empati tinggi.",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>strengths: { title: "Apa kekuatan anak tipe Social?", points: ["😊 Ramah, cepat akrab, dan peduli pada perasaan orang lain.", "🙌 Senang bekerja sama dan membuat suasana jadi nyaman.", "💖 Punya empati yang tinggi dan suka membantu sesama."] },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["👤 Bisa merasa kurang percaya diri saat harus menyelesaikan tugas individu.", "⚙️ Kadang merasa takut gagal saat menghadapi tantangan teknis."] }</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>E: {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>image: "https://placehold.co/600x600/c084fc/ffffff?text=Enterprising\n(E)",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>headline: "📣 (E) – SI PEMIMPIN &amp; INISIATOR",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>intro: "Anak Anda menunjukkan tipe Enterprising — percaya diri, penuh inisiatif, dan cepat ambil peran.",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>strengths: { title: "Apa kekuatan anak tipe Enterprising?", points: ["🌟 Suka tampil, mengatur kelompok, dan menyampaikan ide.", "💪 Berani mengambil keputusan dan punya jiwa kepemimpinan yang kuat.", "🚀 Penuh inisiatif dan persuasif."] },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["🔍 Kadang kurang sabar dengan proses yang panjang.", "🎯 Terlalu fokus pada hasil akhir sehingga bisa melewatkan detail penting."] }</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>C: {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>image: "https://placehold.co/600x600/9ca3af/ffffff?text=Conventional\n(C)",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>headline: "✅ (C) – SI TERATUR &amp; TELITI",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>intro: "Anak Anda menunjukkan tipe Conventional — suka rutinitas, rapi, dan merasa nyaman saat semua tertata jelas.",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>strengths: { title: "Apa kekuatan anak tipe Conventional?", points: ["꼼 Teliti, suka mengikuti langkah demi langkah, dan bisa diandalkan.", "📋 Merasa nyaman saat semua berjalan sesuai aturan dan struktur.", "✨ Sangat fokus dan bertanggung jawab dalam menyelesaikan tugas."] },</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>challenges: { title: "Apa yang mungkin jadi tantangan?", points: ["🤔 Kadang ragu untuk mencoba hal baru atau berimprovisasi.", "🚧 Bisa terlalu terpaku pada 'satu cara yang benar' dan kurang fleksibel."] }</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>cta: {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>intro: "Ingin tahu bagaimana CURIOOkids bisa bantu anak Anda meraih potensi terbaiknya?",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>text: "Yuk, ambil Tes Kepribadian Anak CURIOOkids (SmartStart) bersama teacher kami!",</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>buttonText: "Klik di sini untuk booking sekarang"</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>};</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>// --- Komponen yang Dapat Digunakan Kembali ---</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>function Card({ children, className = '' }) {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>return (</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div className={`bg-white rounded-2xl shadow-lg p-6 md:p-8 w-full ${className}`}&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>{children}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>);</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>function Button({ children, onClick, className = '', disabled = false }) {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>return (</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>onClick={onClick}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>disabled={disabled}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>className={`w-full text-center font-bold py-3 px-6 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 font-header ${className}`}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>{children}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>);</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>// --- Komponen Halaman ---</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>function QuizPage({ answers, setAnswers, handleSubmit }) {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const handleSelect = (questionId, type) =&gt; {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>setAnswers(prev =&gt; ({ ...prev, [questionId]: type }));</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>};</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">      </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const allAnswered = Object.keys(answers).length === quizData.length;</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>return (</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div className="space-y-8"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div className="text-center"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h1 className="font-header text-3xl md:text-4xl font-extrabold text-[#2c2e83]"&gt;Apa Tipe Jenius Anak Anda?&lt;/h1&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;p className="font-content mt-2 text-gray-600"&gt;Jawab 6 pertanyaan ini untuk mengetahuinya!&lt;/p&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div className="space-y-6"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{quizData.map((item, index) =&gt; (</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">              </span>&lt;Card key={item.id}&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p className="font-header font-bold text-lg text-gray-800 mb-4"&gt;{index + 1}. {item.question}&lt;/p&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="grid grid-cols-1 md:grid-cols-2 gap-3"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                  </span>{Object.entries(item.options).map(([key, option]) =&gt; (</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;button</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                      </span>key={key}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                      </span>onClick={() =&gt; handleSelect(item.id, option.type)}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                      </span>className={`font-content p-4 rounded-lg text-left transition-all duration-200 border-2 ${answers[item.id] === option.type ? 'bg-[#2c2e83] text-white border-[#2c2e83] ring-2 ring-offset-2 ring-[#f78f1e]' : 'bg-gray-100 hover:bg-gray-200 border-transparent'}`}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                      </span>{option.text}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                  </span>))}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">              </span>&lt;/Card&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>))}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&lt;Button<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>onClick={handleSubmit}<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>disabled={!allAnswered}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>className="bg-[#f78f1e] text-white text-xl"</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>Lihat Hasilnya</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/Button&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>);</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>function LeadFormPage({ handleFormSubmit, resultType }) {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const [formData, setFormData] = useState({<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>name: '',<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>email: '',<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>phone: '',<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>childAge: '',<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>consent: false,<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>result: resultType<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const [status, setStatus] = useState({ loading: false, error: '', success: '' });</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyCkgBwuks-mYgbWSoSRWeMz6WNwOm30cp9XgR4nWo963nRI-fdfrQnrk3ML1OXL9PmFg/exec';</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const handleChange = (e) =&gt; {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const { name, value, type, checked } = e.target;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>setFormData(prev =&gt; ({</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>...prev,</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>[name]: type === 'checkbox' ? checked : value</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}));</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>};</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const onSubmit = (e) =&gt; {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>e.preventDefault();</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>if (!formData.name || !formData.email || !formData.phone || !formData.childAge) {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>setStatus({ ...status, error: 'Mohon isi semua kolom untuk melihat hasil Anda.' });</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>return;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>setStatus({ loading: true, error: '', success: '' });</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const form = new FormData();</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>for (const key in formData) {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>form.append(key, formData[key]);</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>fetch(GOOGLE_SCRIPT_URL, {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>method: 'POST',</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>body: form</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>})</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>.then(response =&gt; response.json())</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>.then(data =&gt; {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>if (data.result === "success") {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>// Memicu event 'Lead' untuk Meta Pixel</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (typeof fbq === 'function') {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>fbq('track', 'Lead');</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setStatus({ loading: false, error: '', success: 'Data berhasil dikirim!' });</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setTimeout(() =&gt; { handleFormSubmit(); }, 1000);</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>throw new Error(data.error || 'Terjadi kesalahan pada server.');</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>})</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>.catch(error =&gt; {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>console.error('Error submitting to Google Sheet:', error);</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>setStatus({ loading: false, error: `Gagal mengirim data: ${error.message}`, success: '' });</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>};</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>return (</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>&lt;Card className="max-w-lg mx-auto"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div className="text-center mb-6"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h2 className="font-header text-2xl md:text-3xl font-bold text-[#2c2e83]"&gt;Satu Langkah Lagi!&lt;/h2&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;p className="font-content mt-2 text-gray-600"&gt;Isi data di bawah ini untuk membuka hasil tes.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&lt;form onSubmit={onSubmit} className="space-y-4"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label htmlFor="name" className="font-content block text-sm font-medium text-gray-700 mb-1"&gt;Nama Orang Tua&lt;/label&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="text" name="name" id="name" value={formData.name} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="contoh: Budi" required /&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label htmlFor="email" className="font-content block text-sm font-medium text-gray-700 mb-1"&gt;Alamat Email&lt;/label&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="anda@email.com" required /&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label htmlFor="phone" className="font-content block text-sm font-medium text-gray-700 mb-1"&gt;Nomor Telepon&lt;/label&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="tel" name="phone" id="phone" value={formData.phone} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="08123456789" required /&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label htmlFor="childAge" className="font-content block text-sm font-medium text-gray-700 mb-1"&gt;Usia Anak (Tahun)&lt;/label&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="number" name="childAge" id="childAge" value={formData.childAge} onChange={handleChange} className="font-content w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f78f1e] focus:border-transparent" placeholder="contoh: 7" required /&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div className="flex items-start mt-4"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="flex items-center h-5"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;input</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>id="consent"</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>name="consent"</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>type="checkbox"</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>checked={formData.consent}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>onChange={handleChange}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>className="focus:ring-[#f78f1e] h-4 w-4 text-[#2c2e83] border-gray-300 rounded"</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>/&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="ml-3 text-sm"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label htmlFor="consent" className="font-content text-gray-600"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>Ya, saya bersedia dihubungi oleh tim CURIOO untuk informasi lebih lanjut mengenai program yang sesuai.</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/label&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{status.error &amp;&amp; &lt;p className="font-content text-red-500 text-sm text-center"&gt;{status.error}&lt;/p&gt;}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{status.success &amp;&amp; &lt;p className="font-content text-green-500 text-sm text-center"&gt;{status.success}&lt;/p&gt;}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div className="pt-4"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">              </span>&lt;Button type="submit" className="bg-[#f78f1e] text-white text-lg" disabled={status.loading}&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>{status.loading ? 'Mengirim...' : 'Lihat Hasil Saya!'}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">              </span>&lt;/Button&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/form&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/Card&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>);</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>function ThankYouPage({ resultType }) {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const result = resultData[resultType];</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const cta = resultData.cta;</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>// Memicu event 'CompleteRegistration' saat halaman ini ditampilkan</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>useEffect(() =&gt; {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>if (typeof fbq === 'function') {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>fbq('track', 'CompleteRegistration');</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>}, []); // Array kosong memastikan ini hanya berjalan sekali saat komponen dimuat</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>if (!result) {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>return (</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&lt;Card&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h2 className="font-header text-2xl font-bold text-center text-[#2c2e83]"&gt;Hasil tidak ditemukan.&lt;/h2&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;p className="font-content text-center mt-2"&gt;Silakan coba lagi kuisnya.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/Card&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>);</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>return (</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>&lt;Card className="max-w-4xl mx-auto animate-fade-in"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div className="grid md:grid-cols-2 gap-8 items-center"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;img<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>src={result.image}<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>alt={`Placeholder untuk ${result.headline}`}<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>className="w-full h-auto aspect-square object-cover rounded-lg shadow-md"</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>/&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="text-center md:text-left"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h1 className="font-header text-3xl md:text-4xl font-extrabold text-[#2c2e83]"&gt;{result.headline}&lt;/h1&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p className="font-content text-lg text-gray-700 mt-3"&gt;{result.intro}&lt;/p&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div className="grid md:grid-cols-2 gap-8 mt-8 text-left"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="bg-blue-50 p-6 rounded-lg"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h3 className="font-header font-bold text-xl text-[#2c2e83] mb-3"&gt;{result.strengths.title}&lt;/h3&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ul className="space-y-2 font-content"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>{result.strengths.points.map((point, i) =&gt; &lt;li key={i} className="text-gray-800"&gt;{point}&lt;/li&gt;)}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="bg-orange-50 p-6 rounded-lg"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h3 className="font-header font-bold text-xl text-[#f78f1e] mb-3"&gt;{result.challenges.title}&lt;/h3&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ul className="space-y-2 font-content"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>{result.strengths.points.map((point, i) =&gt; &lt;li key={i} className="text-gray-800"&gt;{point}&lt;/li&gt;)}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div className="text-center mt-10 pt-8 border-t border-gray-200"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p className="font-header text-lg font-semibold text-gray-800"&gt;{cta.intro}&lt;/p&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p className="font-content text-md text-gray-600 mt-2"&gt;{cta.text}&lt;/p&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;a</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>href="https://curioo.co.id/digital-form/"</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>target="_blank"</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>rel="noopener noreferrer"</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>className="font-header mt-6 inline-block bg-[#f78f1e] text-white font-bold py-3 px-10 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105"</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>📍 {cta.buttonText}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/a&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/Card&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>);</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>// --- Komponen Aplikasi Utama ---</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>function App() {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const [page, setPage] = useState('quiz');</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const [answers, setAnswers] = useState({});</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const [result, setResult] = useState(null);</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const handleQuizSubmit = () =&gt; {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>Object.values(answers).forEach(type =&gt; { scores[type]++; });</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const highestScore = Math.max(...Object.values(scores));</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const resultType = Object.keys(scores).find(key =&gt; scores[key] === highestScore);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>setResult(resultType);</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>setPage('form');</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>};</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const handleFormSubmit = () =&gt; {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>setPage('thankyou');</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>};</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const renderPage = () =&gt; {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>switch (page) {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>case 'quiz':</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>return &lt;QuizPage answers={answers} setAnswers={setAnswers} handleSubmit={handleQuizSubmit} /&gt;;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>case 'form':</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>return &lt;LeadFormPage handleFormSubmit={handleFormSubmit} resultType={result} /&gt;;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>case 'thankyou':</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>return &lt;ThankYouPage resultType={result} /&gt;;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>default:</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>return &lt;QuizPage answers={answers} setAnswers={setAnswers} handleSubmit={handleQuizSubmit} /&gt;;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>};</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>return (</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>&lt;main className="bg-gray-50 min-h-screen p-4 sm:p-6 md:p-8 flex items-center justify-center"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div className="w-full max-w-5xl"&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{renderPage()}</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/main&gt;</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>);</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p5"><span class="s11"></span><br></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>const container = document.getElementById('root');</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>if (container) {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>const root = ReactDOM.createRoot(container);</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">      </span>root.render(&lt;App /&gt;);</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>} else {</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>console.error("Target container 'root' not found in the DOM.");</span></p>
+<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">script</span><span class="s3">&gt;</span></p>
+<p class="p1"><span class="s3">&lt;/</span><span class="s1">body</span><span class="s3">&gt;</span></p>
+<p class="p1"><span class="s3">&lt;/</span><span class="s1">html</span><span class="s3">&gt;</span></p>
+<p class="p5"><span class="s11"></span><br></p>
 </body>
 </html>
